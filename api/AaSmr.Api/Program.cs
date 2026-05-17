@@ -1,4 +1,10 @@
 using AaSmr.Api.Data;
+using AaSmr.Api.Features.Appointments;
+using AaSmr.Api.Features.Branches;
+using AaSmr.Api.Features.ServiceTypes;
+using AaSmr.Api.Features.Slots;
+using AaSmr.Api.Features.Users;
+using AaSmr.Api.Shared;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,12 +47,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors();
 app.UseHttpsRedirection();
 
 app.MapGet("/api/health", () => Results.Ok(new { status = "healthy" }))
    .WithName("Health")
    .WithOpenApi();
+
+app.MapUsers();
+app.MapBranches();
+app.MapServiceTypes();
+app.MapSlots();
+app.MapAppointments();
 
 app.Run();
 
