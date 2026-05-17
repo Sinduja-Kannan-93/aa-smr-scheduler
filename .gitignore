@@ -1,0 +1,45 @@
+# Brief PDF (not for redistribution)
+*.pdf
+
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.pfx
+*.snk
+*.DotSettings.user
+
+# EF / App secrets — real connection string (never commit)
+appsettings.Development.json
+appsettings.Production.json
+secrets.json
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+.pnp
+.pnp.js
+
+# Vitest / Coverage
+coverage/
+playwright-report/
+test-results/
+
+# IDEs
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# dotnet tools / packages cache
+.dotnet/
+packages/
+nuget.config.local
