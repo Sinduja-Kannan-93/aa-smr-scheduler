@@ -74,3 +74,39 @@ Provided complete C# code for all 28 files (9 domain, 9 data, 10 test files). In
 
 ### Test results
 38/38 passing. 0 warnings.
+
+---
+
+## Phase 2 — Backend API Endpoints (2026-05-17)
+
+### Session resume prompt
+
+```
+Avoid subagent dispatches for straightforward implementation — write API endpoints directly. resume Phase 2 in a new session
+```
+
+### Endpoints implemented
+
+| Method | Route | Purpose |
+|---|---|---|
+| GET | `/api/users` | Named seed users for Act-As dropdown |
+| GET | `/api/branches` | All branches |
+| GET | `/api/service-types` | All service types |
+| GET | `/api/slots` | Available slots with `serviceTypeId`, `branchId`, `from`, `to` filters |
+| POST | `/api/appointments` | Book slot; generates `SMR-YYYY-XXXXXX`; 409 on double-book |
+| GET | `/api/appointments/today` | Admin view grouped by mechanic |
+| GET | `/api/appointments` | Mechanic-scoped list (`mechanicId`, `from`, `to`) |
+| GET | `/api/appointments/{id}` | Detail with work notes |
+| POST | `/api/appointments/{id}/notes` | Append timestamped work note |
+| PATCH | `/api/appointments/{id}/status` | State machine: Scheduled→InProgress→Completed or →NoShow |
+
+### Key decisions made
+
+- `ExceptionMiddleware` maps `ValidationException`→400, `NotFoundException`→404, `ConflictException`→409, unhandled→500.
+- Double-booking protection: application-level `slot.IsBooked` check + `DbUpdateException` catch on unique constraint as concurrent-request safety net.
+- `ReferenceNumberGenerator` uses a 32-char unambiguous alphabet (no I/O/1/0); retries up to 10 times on collision.
+- `StatusTransition.IsValid` is single source of truth for the state machine.
+- `InMemoryWebApplicationFactory` (fresh DB name per test class) used for integration tests.
+
+### Test results
+74/74 passing. 0 warnings. 36 new Phase 2 tests added.

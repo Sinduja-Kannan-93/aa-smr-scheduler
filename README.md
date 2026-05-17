@@ -38,7 +38,7 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 |---|---|---|
 | 0 | Bootstrap: repo, scaffolding, .gitignore, README | ✅ Done |
 | 1 | Domain model, EF Core, migrations, seed data | ✅ Done |
-| 2 | Backend API endpoints | 📋 Planned |
+| 2 | Backend API endpoints | ✅ Done |
 | 3 | Frontend scaffold, identity context, design system | 📋 Planned |
 | 4 | Booking agent flow (UI) | 📋 Planned |
 | 5 | Mechanic flow (UI) | 📋 Planned |
@@ -52,10 +52,11 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 - Domain model: 7 entities + 2 enums with EF Core 8 configurations.
 - Initial migration (auto-applies on first run via `MigrateAsync`).
 - Idempotent seed: 3 branches (Dublin/Cork/Galway), 4 service types, 4 mechanics, 6 named users, 224 appointment slots across next 7 days.
-- 38 passing tests (entity shapes, unique indexes, seed counts, integration startup test).
+- All backend API endpoints: `GET /api/users`, `/api/branches`, `/api/service-types`, `/api/slots` (with filters), `POST /api/appointments` (atomic booking, `SMR-YYYY-XXXXXX` reference, 409 on double-book), `GET /api/appointments/today`, `GET /api/appointments`, `GET /api/appointments/{id}`, `POST /api/appointments/{id}/notes`, `PATCH /api/appointments/{id}/status` (state machine).
+- `ApiResponse<T>` envelope + exception middleware (400/404/409/500).
+- 74 passing tests (38 Phase 1 + 36 Phase 2: status machine, slot filters, booking happy path, conflict, validation, detail, work notes, all status transitions).
 
 **Not done yet:**
-- Backend API endpoints (Phase 2).
 - Frontend (Phases 3–6).
 - E2E tests and polish (Phase 7).
 
