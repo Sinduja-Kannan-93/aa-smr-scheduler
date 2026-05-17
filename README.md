@@ -37,7 +37,7 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 | Phase | Description | Status |
 |---|---|---|
 | 0 | Bootstrap: repo, scaffolding, .gitignore, README | ✅ Done |
-| 1 | Domain model, EF Core, migrations, seed data | 📋 Planned |
+| 1 | Domain model, EF Core, migrations, seed data | ✅ Done |
 | 2 | Backend API endpoints | 📋 Planned |
 | 3 | Frontend scaffold, identity context, design system | 📋 Planned |
 | 4 | Booking agent flow (UI) | 📋 Planned |
@@ -49,9 +49,15 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 
 **Done:**
 - Project scaffolding, git setup, GitHub repo, solution + web skeleton.
+- Domain model: 7 entities + 2 enums with EF Core 8 configurations.
+- Initial migration (auto-applies on first run via `MigrateAsync`).
+- Idempotent seed: 3 branches (Dublin/Cork/Galway), 4 service types, 4 mechanics, 6 named users, 224 appointment slots across next 7 days.
+- 38 passing tests (entity shapes, unique indexes, seed counts, integration startup test).
 
 **Not done yet:**
-- Everything application-level (see phase status above).
+- Backend API endpoints (Phase 2).
+- Frontend (Phases 3–6).
+- E2E tests and polish (Phase 7).
 
 ## Known Rough Edges
 

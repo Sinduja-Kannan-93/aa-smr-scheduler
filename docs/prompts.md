@@ -53,3 +53,24 @@ Plan reviewed. Proceed with implementation.
 
 ---
 <!-- Append new entries below this line at the end of each phase -->
+
+---
+
+## Phase 1 — Domain Model, EF Core, Migrations, Seed (2026-05-17)
+
+### Planner subagent prompt (summary)
+Requested a bite-sized TDD plan for 8 logical units covering: NuGet packages, domain entities + enums, AppDbContext + EF configurations, Initial migration, DbInitializer seed, Program.cs startup wiring, SQLite constraint enforcement tests, and seed count assertions.
+
+### Implementer subagent prompt (summary)
+Provided complete C# code for all 28 files (9 domain, 9 data, 10 test files). Instructed agent to handle GateGuard two-step Write pattern, add SQLite package, build solution, and NOT run migrations or commit.
+
+### Key decisions made
+- Appointment → AppointmentSlot: `DeleteBehavior.NoAction` (avoids SQL Server cascade cycle)
+- Appointment → WorkNote: `DeleteBehavior.Cascade`
+- All other FKs: `Restrict` or `SetNull`
+- Seed is idempotent via `if (await db.Branches.AnyAsync()) return;`
+- `Program.cs` guards `MigrateAsync` behind `db.Database.IsRelational()` so integration tests using InMemory don't crash
+- Integration test uses `new WebApplicationFactory<Program>()` per test class (not `IClassFixture`) to avoid scope isolation bug
+
+### Test results
+38/38 passing. 0 warnings.
