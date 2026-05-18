@@ -4,14 +4,14 @@
 
 ## How to Run
 
-**Prerequisites:** .NET 9 SDK, Node 18+, SQL Server LocalDB (`MSSQLLocalDB` instance).
+**Prerequisites:** .NET 8 SDK, Node 20+, SQL Server LocalDB (`MSSQLLocalDB` instance).
 
 ```bash
 # 1. Copy the example config and add your connection string
 cp api/AaSmr.Api/appsettings.Development.example.json api/AaSmr.Api/appsettings.Development.json
-# (edit the ConnectionStrings.Default value if your LocalDB instance differs)
+# (edit the ConnectionStrings.Default value if your LocalDB instance name differs)
 
-# 2. Start the API (auto-applies migrations and seeds data on first run)
+# 2. Start the API — auto-applies migrations and seeds data on first run
 dotnet run --project api/AaSmr.Api
 
 # 3. In a second terminal, start the frontend
@@ -19,13 +19,26 @@ npm --prefix web install
 npm --prefix web run dev
 ```
 
-Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to switch between named seed users.
+Open **http://localhost:5173**. Use the **Viewing as** dropdown (top-right of the header) to switch between named seed users.
+
+### Running tests
+
+```bash
+# Backend unit + integration tests (74 tests)
+dotnet test api/AaSmr.sln
+
+# Frontend unit tests (41 tests, no servers needed)
+npm --prefix web test
+
+# Playwright E2E (requires both servers running)
+npm --prefix web run test:e2e
+```
 
 ## Stack & Why
 
 | Layer | Choice | Rationale |
 |---|---|---|
-| Frontend | React 18 + Vite + TypeScript | Fast HMR, rich ecosystem, clear separation from API, better iteration speed than Blazor for a UI-heavy tool |
+| Frontend | React 19 + Vite 8 + TypeScript | Fast HMR, rich ecosystem, clear separation from API, better iteration speed than Blazor for a UI-heavy tool |
 | State / data | TanStack Query + Zod | Server-state caching, type-safe API contract, automatic cache invalidation on role switch |
 | Backend | ASP.NET Core 8 Minimal API | Lightweight, idiomatic .NET 8, easy to host, good EF integration |
 | ORM | EF Core 8 (SqlServer) | Code-first migrations, type-safe queries, auto-applies schema on startup |
@@ -40,7 +53,7 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 | 1 | Domain model, EF Core, migrations, seed data | ✅ Done |
 | 2 | Backend API endpoints | ✅ Done |
 | 3 | Frontend: design system, all three role views, 41 UI tests | ✅ Done |
-| 4 | Polish, E2E tests, final verification | 📋 Planned |
+| 4 | Polish, E2E tests, PRODUCT.md, DESIGN.md, final verification | ✅ Done |
 
 ## What's Done / Not Done
 
@@ -62,12 +75,19 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 - **Mechanic view**: date-range appointment list; per-row detail Dialog with status transitions (Scheduled→InProgress→Completed, No Show confirm), inline work-note form.
 - 41 passing frontend tests (api helpers, IdentityContext, all UI primitives).
 
-**Not done yet:**
-- Playwright E2E tests for critical user flows (Phase 4).
+**Phase 4 — complete:**
+- Playwright E2E: 4 spec files covering role switching, booking golden path, admin view, and mechanic full flow (add note → In Progress → Completed).
+- `web/PRODUCT.md` — brand, user roles, and core flows context document.
+- `web/DESIGN.md` — full design system reference (palette, typography, spacing, radius, shadow, motion, components, anti-patterns).
+- `web/playwright.config.ts` — configured with `baseURL`, `webServer` (auto-starts Vite), trace/screenshot on failure.
+- Removed unused Vite default `App.css`.
+- README finalised: correct stack versions, test commands, all phases ✅.
 
 ## Known Rough Edges
 
-- None yet.
+- **E2E tests** require both the .NET API (`dotnet run`) and Vite dev server to be running. The Playwright config starts Vite automatically; the API must be started separately.
+- **LocalDB** must be available on the dev machine (`sqllocaldb info MSSQLLocalDB`). On machines without LocalDB, swap the connection string for a full SQL Server or SQLite (requires a new migration).
+- **Seed slots are UTC** — if the machine timezone differs significantly from Ireland time the "today" slot grouping may show tomorrow's or yesterday's appointments.
 
 ## AI Tools Used
 
@@ -99,3 +119,4 @@ Items deliberately not implemented:
 - **Production config hardening** — secrets in env/Key Vault; migrations gated behind a deploy step rather than auto-applied at startup.
 - **Multi-tenant branch isolation** — branches share one DB; tenant separation is a future concern.
 - **Audit log** — status-change and note-edit history.
+- **Docker / docker-compose** — containerised deployment for API and frontend; deferred as beyond the interview brief scope.
