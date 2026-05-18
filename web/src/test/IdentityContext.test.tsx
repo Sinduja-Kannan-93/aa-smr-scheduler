@@ -14,9 +14,9 @@ vi.mock('../lib/api', async importOriginal => {
       ...actual.api,
       users: {
         list: vi.fn().mockResolvedValue([
-          { id: 1, fullName: 'Alice Admin', role: 'Admin', mechanicId: null, mechanicName: null, branchId: 1 },
-          { id: 2, fullName: 'Bob Agent', role: 'BookingAgent', mechanicId: null, mechanicName: null, branchId: 1 },
-          { id: 3, fullName: 'Carlos Mechanic', role: 'Mechanic', mechanicId: 10, mechanicName: 'Carlos Mechanic', branchId: 1 },
+          { id: 'a1b2c3d4-0001-0000-0000-000000000001', fullName: 'Alice Admin', role: 'Admin', mechanicId: null, mechanicName: null, branchId: 'b1b2c3d4-0001-0000-0000-000000000001' },
+          { id: 'a1b2c3d4-0002-0000-0000-000000000002', fullName: 'Bob Agent', role: 'BookingAgent', mechanicId: null, mechanicName: null, branchId: 'b1b2c3d4-0001-0000-0000-000000000001' },
+          { id: 'a1b2c3d4-0003-0000-0000-000000000003', fullName: 'Carlos Mechanic', role: 'Mechanic', mechanicId: 'm1b2c3d4-0001-0000-0000-000000000001', mechanicName: 'Carlos Mechanic', branchId: 'b1b2c3d4-0001-0000-0000-000000000001' },
         ] satisfies User[]),
       },
     },
@@ -29,7 +29,7 @@ function TestConsumer() {
     <div>
       <p data-testid="active">{activeUser?.fullName ?? 'none'}</p>
       <p data-testid="count">{users.length}</p>
-      <button onClick={() => switchUser(2)}>Switch to Bob</button>
+      <button onClick={() => switchUser('a1b2c3d4-0002-0000-0000-000000000002')}>Switch to Bob</button>
     </div>
   )
 }

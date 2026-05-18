@@ -85,18 +85,18 @@ describe('Zod schemas', () => {
 
   it('parses a valid Slot', () => {
     const slot = SlotSchema.parse({
-      id: 1,
+      id: 'a1b2c3d4-0001-0000-0000-000000000001',
       startTime: '2024-06-15T09:00:00',
       endTime: '2024-06-15T10:00:00',
-      mechanicId: 2,
+      mechanicId: 'm1b2c3d4-0001-0000-0000-000000000001',
       mechanicName: 'Joe',
-      branchId: 1,
+      branchId: 'b1b2c3d4-0001-0000-0000-000000000001',
       branchName: 'Dublin',
-      serviceTypeId: 3,
+      serviceTypeId: 's1b2c3d4-0001-0000-0000-000000000001',
       serviceTypeName: 'Oil Change',
       durationMinutes: 60,
     })
-    expect(slot.id).toBe(1)
+    expect(slot.id).toBe('a1b2c3d4-0001-0000-0000-000000000001')
     expect(slot.durationMinutes).toBe(60)
   })
 })

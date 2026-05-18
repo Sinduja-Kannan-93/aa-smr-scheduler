@@ -42,7 +42,7 @@ export function AppShell({ children }: AppShellProps) {
                     id="act-as-select"
                     className="act-as__select"
                     value={activeUser?.id ?? ''}
-                    onChange={e => switchUser(Number(e.target.value))}
+                    onChange={e => switchUser(e.target.value)}
                     aria-label="Switch active user"
                   >
                     {users.map(u => (

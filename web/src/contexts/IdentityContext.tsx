@@ -7,7 +7,7 @@ interface IdentityContextValue {
   users: User[]
   activeUser: User | null
   isLoading: boolean
-  switchUser: (userId: number) => void
+  switchUser: (userId: string) => void
 }
 
 const IdentityContext = createContext<IdentityContextValue | null>(null)
@@ -18,13 +18,13 @@ export function IdentityProvider({ children }: { children: ReactNode }) {
     queryFn: api.users.list,
   })
 
-  const [activeUserId, setActiveUserId] = useState<number | null>(null)
+  const [activeUserId, setActiveUserId] = useState<string | null>(null)
 
   const activeUser = activeUserId
     ? (users.find(u => u.id === activeUserId) ?? null)
     : (users[0] ?? null)
 
-  const switchUser = useCallback((userId: number) => {
+  const switchUser = useCallback((userId: string) => {
     setActiveUserId(userId)
     // Reset all cached data so the new view starts fresh
     queryClient.removeQueries({ queryKey: ['appointments'] })

@@ -17,7 +17,7 @@ import { Spinner } from '../components/ui/Spinner'
 
 export function MechanicPage() {
   const { activeUser } = useIdentity()
-  const mechanicId = activeUser?.mechanicId ?? 0
+  const mechanicId = activeUser?.mechanicId ?? ''
 
   const today = new Date()
   const nextWeek = new Date(today)
@@ -25,14 +25,14 @@ export function MechanicPage() {
 
   const [from, setFrom] = useState(toDateInputValue(today))
   const [to, setTo] = useState(toDateInputValue(nextWeek))
-  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const listParams = { mechanicId, from, to }
 
   const { data: appointments = [], isLoading } = useQuery({
     queryKey: qk.appointments(listParams),
     queryFn: () => api.appointments.list(listParams),
-    enabled: mechanicId > 0,
+    enabled: !!mechanicId,
   })
 
   return (
@@ -108,7 +108,7 @@ function AppointmentDetailDialog({
   appointmentId,
   onClose,
 }: {
-  appointmentId: number | null
+  appointmentId: string | null
   onClose: () => void
 }) {
   const qc = useQueryClient()
@@ -116,7 +116,7 @@ function AppointmentDetailDialog({
   const [noShowOpen, setNoShowOpen] = useState(false)
 
   const { data, isLoading } = useQuery({
-    queryKey: qk.appointment(appointmentId ?? 0),
+    queryKey: qk.appointment(appointmentId ?? ''),
     queryFn: () => api.appointments.get(appointmentId!),
     enabled: appointmentId !== null,
   })

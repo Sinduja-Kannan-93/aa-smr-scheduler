@@ -37,7 +37,7 @@ export function BookingPage() {
     queryFn: api.branches.list,
   })
 
-  const slotsParams = { from, to, serviceTypeId: serviceTypeId ? Number(serviceTypeId) : undefined, branchId: branchId ? Number(branchId) : undefined }
+  const slotsParams = { from, to, serviceTypeId: serviceTypeId || undefined, branchId: branchId || undefined }
 
   const { data: slots = [], isLoading: slotsLoading } = useQuery({
     queryKey: qk.slots(slotsParams),
