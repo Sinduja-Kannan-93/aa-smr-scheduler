@@ -1,4 +1,7 @@
 dialog.dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   border: none;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
@@ -8,6 +11,10 @@ dialog.dialog {
   flex-direction: column;
   background: var(--color-surface);
   animation: dialog-in var(--duration-normal) var(--ease-out);
+}
+
+dialog.dialog:not([open]) {
+  display: none;
 }
 
 dialog.dialog::backdrop {

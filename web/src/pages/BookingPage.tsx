@@ -141,10 +141,12 @@ export function BookingPage() {
           <>
             <SlotSummary slot={selectedSlot} />
             <form id="book-form" onSubmit={handleBook} className="book-form">
-              <Input label="Customer name" name="customerName" required placeholder="Full name" />
+              <div className="book-form__row">
+                <Input label="Customer name" name="customerName" required placeholder="Full name" />
+                <Input label="Phone number" name="customerPhone" type="tel" required placeholder="+353…" />
+              </div>
               <Input label="Vehicle registration" name="vehicleRegistration" required placeholder="e.g. 241-D-12345" />
-              <Input label="Phone number" name="customerPhone" type="tel" required placeholder="+353…" />
-              <Textarea label="Notes" name="notes" placeholder="Any additional notes…" rows={3} />
+              <Textarea label="Notes" name="notes" placeholder="Any additional notes…" rows={2} />
             </form>
           </>
         )}
