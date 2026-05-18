@@ -110,3 +110,43 @@ Avoid subagent dispatches for straightforward implementation — write API endpo
 
 ### Test results
 74/74 passing. 0 warnings. 36 new Phase 2 tests added.
+
+---
+
+## Phase 3 — Frontend Implementation (2026-05-18)
+
+### Resume prompt
+Proceed to phase 3. Exclude commit approval process for all remaining phases — implement everything autonomously and git push. Each task has its own commit, updates README & prompts without fail.
+
+### Design system decisions
+- **Style direction**: Swiss/International — precise grids, functional hierarchy, purposeful whitespace.
+- **Palette**: AA Navy `#002D72` (surfaces/authority), AA Yellow `#F5A800` (CTAs/highlights), `#F4F6F8` background, white cards.
+- **Typography**: Inter 400/500/600/700 via Google Fonts (preconnected in index.html).
+- **Status colours**: Scheduled=blue, InProgress=amber, Completed=green, NoShow=gray — semantic, not decorative.
+- **UI primitives**: pure CSS custom properties, no Tailwind or shadcn library defaults.
+- **Skill invoked**: UI-UX-PRO-MAX (design quality guidelines, WCAG checklist, interaction rules).
+
+### Components built
+
+| File | Purpose |
+|---|---|
+| `src/styles/tokens.css` | All CSS custom properties (palette, spacing, radius, shadow, motion) |
+| `src/lib/api.ts` | Zod schemas + typed fetch functions for all 10 endpoints + helpers |
+| `src/lib/queryClient.ts` | TanStack Query client (30 s stale time, retry: 1) |
+| `src/contexts/IdentityContext.tsx` | Act-As state — loads users, tracks active, invalidates queries on switch |
+| `src/components/ui/` | Button, Badge+StatusBadge, Card+CardHeader, Input+Textarea, Select, Dialog, EmptyState, Spinner |
+| `src/components/AppShell.tsx` | Sticky navy header with AA logo mark + Act-As dropdown |
+| `src/pages/AdminPage.tsx` | Today's schedule grouped by mechanic (stat row + cards + 60 s poll) |
+| `src/pages/BookingPage.tsx` | Slot browser (date/service/branch filters) + book Dialog + confirmation |
+| `src/pages/MechanicPage.tsx` | Mechanic schedule + detail Dialog (status transitions, No Show confirm, work notes) |
+| `src/App.tsx` | Role-based view switch inside AppShell |
+| `src/main.tsx` | QueryClientProvider → IdentityProvider → App |
+
+### Key decisions made
+- Role-based rendering (not URL routing): `activeUser.role` selects AdminPage / BookingPage / MechanicPage; switching identity resets cached queries so the new view starts fresh.
+- Dialog uses native `<dialog>` element with `showModal()` for built-in focus trapping and backdrop; animated with CSS keyframes.
+- `vi.mock` factory in Vitest must not reference outer `const` variables (hoisting); data inlined with `satisfies User[]`.
+- Act-As dropdown on mobile hides the label and role badge chips, keeping only the select for space.
+
+### Test results
+41/41 passing (3 new suites). TypeScript: 0 errors. 10 atomic commits on main.

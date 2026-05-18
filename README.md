@@ -39,11 +39,8 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 | 0 | Bootstrap: repo, scaffolding, .gitignore, README | ✅ Done |
 | 1 | Domain model, EF Core, migrations, seed data | ✅ Done |
 | 2 | Backend API endpoints | ✅ Done |
-| 3 | Frontend scaffold, identity context, design system | 📋 Planned |
-| 4 | Booking agent flow (UI) | 📋 Planned |
-| 5 | Mechanic flow (UI) | 📋 Planned |
-| 6 | Admin home (UI) | 📋 Planned |
-| 7 | Polish, E2E tests, final verification | 📋 Planned |
+| 3 | Frontend: design system, all three role views, 41 UI tests | ✅ Done |
+| 4 | Polish, E2E tests, final verification | 📋 Planned |
 
 ## What's Done / Not Done
 
@@ -56,9 +53,17 @@ Then open http://localhost:5173. Use the **Act As** dropdown (top-right) to swit
 - `ApiResponse<T>` envelope + exception middleware (400/404/409/500).
 - 74 passing tests (38 Phase 1 + 36 Phase 2: status machine, slot filters, booking happy path, conflict, validation, detail, work notes, all status transitions).
 
+**Frontend (Phase 3 — complete):**
+- AA-branded design system: navy `#002D72` / yellow `#F5A800`, Inter typography, CSS custom properties, semantic status colours.
+- `IdentityContext`: loads named seed users, Act-As `<select>` in the header switches identity and resets cached data instantly.
+- 8 UI primitives: Button (4 variants, loading), Badge + StatusBadge, Card + CardHeader, Input + Textarea (labelled, aria), Select (custom arrow), Dialog (native `<dialog>` + backdrop), EmptyState, Spinner.
+- **Admin view**: stat row + mechanic cards with appointment lists and status badges; polls every 60 s.
+- **Booking Agent view**: date-range + service type + branch filter drives slot grid grouped by date; click-to-book Dialog captures customer details and shows confirmation with reference number.
+- **Mechanic view**: date-range appointment list; per-row detail Dialog with status transitions (Scheduled→InProgress→Completed, No Show confirm), inline work-note form.
+- 41 passing frontend tests (api helpers, IdentityContext, all UI primitives).
+
 **Not done yet:**
-- Frontend (Phases 3–6).
-- E2E tests and polish (Phase 7).
+- Playwright E2E tests for critical user flows (Phase 4).
 
 ## Known Rough Edges
 
