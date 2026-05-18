@@ -1,0 +1,74 @@
+dialog.dialog {
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: 0;
+  max-height: 90dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  animation: dialog-in var(--duration-normal) var(--ease-out);
+}
+
+dialog.dialog::backdrop {
+  background: rgba(13, 27, 42, 0.55);
+  backdrop-filter: blur(2px);
+  animation: backdrop-in var(--duration-normal) var(--ease-out);
+}
+
+dialog.dialog--sm { width: min(400px, 95vw); }
+dialog.dialog--md { width: min(560px, 95vw); }
+dialog.dialog--lg { width: min(720px, 95vw); }
+
+.dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.dialog__title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+}
+
+.dialog__close {
+  flex-shrink: 0;
+  padding: 0 !important;
+  width: 32px;
+  height: 32px !important;
+  justify-content: center;
+}
+
+.dialog__body {
+  padding: var(--space-6);
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.dialog__footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

@@ -1,0 +1,19 @@
+.select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select-wrap__select {
+  appearance: none;
+  padding-right: var(--space-8);
+  cursor: pointer;
+}
+
+.select-wrap__arrow {
+  position: absolute;
+  right: var(--space-3);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+  flex-shrink: 0;
+}
