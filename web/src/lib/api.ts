@@ -171,11 +171,11 @@ export const api = {
     get: (id: string) =>
       request(wrap(AppointmentDetailSchema), `/api/appointments/${id}`).then(r => r.data!),
 
-    addNote: (id: string, content: string) =>
+    addNote: (id: string, body: string, authorMechanicId: string) =>
       request(
         wrap(z.object({}).passthrough()),
         `/api/appointments/${id}/notes`,
-        { method: 'POST', body: JSON.stringify({ content }) }
+        { method: 'POST', body: JSON.stringify({ body, authorMechanicId }) }
       ),
 
     patchStatus: (id: string, status: AppointmentStatus) =>

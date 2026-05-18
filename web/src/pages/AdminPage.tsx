@@ -1,8 +1,11 @@
 import './AdminPage.css'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { api, qk, formatTime, formatDate, type MechanicSchedule } from '../lib/api'
+import { api, qk, formatTime, formatDate, formatDateTime, type MechanicSchedule } from '../lib/api'
 import { StatusBadge } from '../components/ui/Badge'
 import { Card, CardHeader } from '../components/ui/Card'
+import { Dialog } from '../components/ui/Dialog'
+import { Button } from '../components/ui/Button'
 import { EmptyState, CalendarIcon } from '../components/ui/EmptyState'
 import { Spinner } from '../components/ui/Spinner'
 
@@ -11,6 +14,8 @@ export function AdminPage() {
   const todayLabel = today.toLocaleDateString('en-IE', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
   })
+
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const { data: schedule = [], isLoading, isError } = useQuery({
     queryKey: qk.today(),
@@ -66,10 +71,12 @@ export function AdminPage() {
       {!isLoading && !isError && schedule.length > 0 && (
         <div className="admin-grid">
           {schedule.map(mechanic => (
-            <MechanicCard key={mechanic.mechanicId} mechanic={mechanic} />
+            <MechanicCard key={mechanic.mechanicId} mechanic={mechanic} onOpen={setSelectedId} />
           ))}
         </div>
       )}
+
+      <AppointmentDetailDialog appointmentId={selectedId} onClose={() => setSelectedId(null)} />
     </div>
   )
 }
@@ -83,7 +90,7 @@ function StatCard({ label, value, accent = false }: { label: string; value: numb
   )
 }
 
-function MechanicCard({ mechanic }: { mechanic: MechanicSchedule }) {
+function MechanicCard({ mechanic, onOpen }: { mechanic: MechanicSchedule; onOpen: (id: string) => void }) {
   const { mechanicName, appointments } = mechanic
   const completed = appointments.filter(a => a.status === 'Completed').length
   const inProgress = appointments.filter(a => a.status === 'InProgress').length
@@ -99,7 +106,8 @@ function MechanicCard({ mechanic }: { mechanic: MechanicSchedule }) {
       ) : (
         <ul className="mechanic-card__list">
           {appointments.map(appt => (
-            <li key={appt.id} className="appt-row">
+            <li key={appt.id} className="appt-row" onClick={() => onOpen(appt.id)} role="button" tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && onOpen(appt.id)}>
               <div className="appt-row__time">
                 <span className="appt-row__time-start">{formatTime(appt.startUtc)}</span>
                 <span className="appt-row__time-sep">–</span>
@@ -119,5 +127,76 @@ function MechanicCard({ mechanic }: { mechanic: MechanicSchedule }) {
         </ul>
       )}
     </Card>
+  )
+}
+
+function AppointmentDetailDialog({ appointmentId, onClose }: { appointmentId: string | null; onClose: () => void }) {
+  const { data, isLoading } = useQuery({
+    queryKey: qk.appointment(appointmentId ?? ''),
+    queryFn: () => api.appointments.get(appointmentId!),
+    enabled: appointmentId !== null,
+  })
+
+  return (
+    <Dialog
+      open={appointmentId !== null}
+      onClose={onClose}
+      title="Appointment Detail"
+      size="lg"
+      footer={<Button variant="ghost" onClick={onClose}>Close</Button>}
+    >
+      {isLoading && (
+        <div className="detail-loading"><Spinner size="md" /></div>
+      )}
+      {data && (
+        <div className="admin-detail">
+          <div className="admin-detail__summary">
+            <div className="admin-detail__row">
+              <span className="admin-detail__ref">{data.referenceNumber}</span>
+              <StatusBadge status={data.status} />
+            </div>
+            <div className="admin-detail__grid">
+              <DetailField label="Customer" value={data.customerName} />
+              <DetailField label="Vehicle" value={data.vehicleRegistration} />
+              <DetailField label="Phone" value={data.customerPhone} />
+              <DetailField label="Service" value={data.serviceTypeName} />
+              <DetailField label="Branch" value={data.branchName} />
+              <DetailField label="Slot" value={`${formatDate(data.startUtc)}, ${formatTime(data.startUtc)}–${formatTime(data.endUtc)}`} />
+            </div>
+            {data.notes && (
+              <div className="admin-detail__notes-block">
+                <span className="admin-detail__label">Booking notes</span>
+                <p>{data.notes}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="work-notes">
+            <h3 className="work-notes__heading">Work Notes ({data.workNotes.length})</h3>
+            {data.workNotes.length === 0 ? (
+              <p className="work-notes__empty">No work notes yet.</p>
+            ) : (
+              <ul className="work-notes__list">
+                {data.workNotes.map(wn => (
+                  <li key={wn.id} className="work-note">
+                    <p className="work-note__content">{wn.body}</p>
+                    <p className="work-note__meta">{wn.authorName} · {formatDateTime(wn.createdUtc)}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+    </Dialog>
+  )
+}
+
+function DetailField({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="detail-field">
+      <span className="detail-field__label">{label}</span>
+      <span className="detail-field__value">{value}</span>
+    </div>
   )
 }

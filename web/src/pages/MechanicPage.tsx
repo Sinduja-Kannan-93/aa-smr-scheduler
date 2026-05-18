@@ -121,8 +121,11 @@ function AppointmentDetailDialog({
     enabled: appointmentId !== null,
   })
 
+  const { activeUser } = useIdentity()
+
   const { mutate: addNote, isPending: addingNote } = useMutation({
-    mutationFn: (content: string) => api.appointments.addNote(appointmentId!, content),
+    mutationFn: (content: string) =>
+      api.appointments.addNote(appointmentId!, content, activeUser!.mechanicId!),
     onSuccess: () => {
       setNote('')
       qc.invalidateQueries({ queryKey: qk.appointment(appointmentId!) })

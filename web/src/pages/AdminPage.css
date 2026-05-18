@@ -83,11 +83,17 @@
   align-items: center;
   padding: var(--space-3) var(--space-3);
   border-radius: var(--radius-md);
+  cursor: pointer;
   transition: background var(--duration-fast) var(--ease-out);
 }
 
 .appt-row:hover {
   background: var(--color-bg);
+}
+
+.appt-row:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
 }
 
 .appt-row__time {
@@ -132,4 +138,117 @@
 
 .appt-row__status {
   flex-shrink: 0;
+}
+
+/* Admin detail dialog */
+.detail-loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-8) 0;
+}
+
+.admin-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.admin-detail__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.admin-detail__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.admin-detail__ref {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-detail__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2) var(--space-4);
+}
+
+.admin-detail__label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-detail__notes-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Shared detail field (also used in MechanicPage) */
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail-field__label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.detail-field__value {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+}
+
+/* Work notes (shared style with MechanicPage) */
+.work-notes__heading {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.work-notes__empty {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.work-notes__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.work-note {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.work-note__content {
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.work-note__meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
 }
