@@ -150,3 +150,34 @@ Proceed to phase 3. Exclude commit approval process for all remaining phases —
 
 ### Test results
 41/41 passing (3 new suites). TypeScript: 0 errors. 10 atomic commits on main.
+
+---
+
+## Phase 4 — Polish, E2E Tests, Final Verification (2026-05-18)
+
+### Resume prompt
+Proceed to phase 4. Ensure nothing is missed from the plan. Ensure to add Claude as co-author in git commit.
+
+### What was done
+
+| Commit | Scope |
+|---|---|
+| Playwright config + 4 E2E specs | Role switching, booking golden path, admin smoke, mechanic full flow |
+| PRODUCT.md + DESIGN.md | Brand context and full design system reference |
+| Vitest scope fix + App.css removal | Exclude e2e/ from Vitest; delete unused Vite default stylesheet |
+| README finalisation | All phases ✅, test commands, known rough edges, docker deferred |
+| Prompts update (this entry) | Phase 4 archived |
+
+### Key decisions made
+- Playwright `include` pattern scoped to `src/**` in vite.config.ts — Playwright e2e specs (`.spec.ts`) were being picked up by Vitest causing 4 phantom suite failures; `include: ['src/**/*.{test,spec}.{ts,tsx}']` fixed it.
+- E2E golden path (mechanic test) books a slot first as BookingAgent, then switches to Mechanic — avoids depending on seed appointments which are slots, not appointments.
+- `test.skip()` guards inside E2E tests handle the case where no available slots exist (e.g., all booked in CI seed state) gracefully without hard-failing.
+- `dotnet clean` required after MSB3492 stale cache error; build and 74/74 tests pass cleanly after clean.
+- Co-author `Claude Sonnet 4.6 <noreply@anthropic.com>` added to all Phase 4 commits.
+
+### Final verification results
+- TypeScript: 0 errors
+- Vitest: 3 files, 41/41 passed
+- dotnet test: 74/74 passed, 0 failed, 0 skipped
+- Playwright E2E: requires both servers running (`dotnet run` + `npm run dev`)
+- All 4 phases complete, all commits pushed to GitHub
