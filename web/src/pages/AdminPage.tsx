@@ -101,14 +101,14 @@ function MechanicCard({ mechanic }: { mechanic: MechanicSchedule }) {
           {appointments.map(appt => (
             <li key={appt.id} className="appt-row">
               <div className="appt-row__time">
-                <span className="appt-row__time-start">{formatTime(appt.slotStartTime)}</span>
+                <span className="appt-row__time-start">{formatTime(appt.startUtc)}</span>
                 <span className="appt-row__time-sep">–</span>
-                <span className="appt-row__time-end">{formatTime(appt.slotEndTime)}</span>
+                <span className="appt-row__time-end">{formatTime(appt.endUtc)}</span>
               </div>
               <div className="appt-row__info">
                 <span className="appt-row__customer">{appt.customerName}</span>
                 <span className="appt-row__detail">
-                  {appt.vehicleReg} · {appt.serviceTypeName}
+                  {appt.vehicleRegistration} · {appt.serviceTypeName}
                 </span>
               </div>
               <div className="appt-row__status">

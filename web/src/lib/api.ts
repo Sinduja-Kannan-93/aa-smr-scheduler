@@ -36,8 +36,8 @@ export type ServiceType = z.infer<typeof ServiceTypeSchema>
 
 export const SlotSchema = z.object({
   id: z.string(),
-  startTime: z.string(),
-  endTime: z.string(),
+  startUtc: z.string(),
+  endUtc: z.string(),
   mechanicId: z.string(),
   mechanicName: z.string(),
   branchId: z.string(),
@@ -54,28 +54,28 @@ export type AppointmentStatus = z.infer<typeof AppointmentStatusSchema>
 export const AppointmentListItemSchema = z.object({
   id: z.string(),
   referenceNumber: z.string(),
-  slotStartTime: z.string(),
-  slotEndTime: z.string(),
+  startUtc: z.string(),
+  endUtc: z.string(),
   customerName: z.string(),
-  vehicleReg: z.string(),
+  vehicleRegistration: z.string(),
   serviceTypeName: z.string(),
   status: AppointmentStatusSchema,
   mechanicName: z.string(),
+  branchName: z.string(),
 })
 export type AppointmentListItem = z.infer<typeof AppointmentListItemSchema>
 
 export const WorkNoteSchema = z.object({
   id: z.string(),
-  content: z.string(),
-  addedAt: z.string(),
-  addedByName: z.string(),
+  body: z.string(),
+  createdUtc: z.string(),
+  authorName: z.string(),
 })
 export type WorkNote = z.infer<typeof WorkNoteSchema>
 
 export const AppointmentDetailSchema = AppointmentListItemSchema.extend({
-  phoneNumber: z.string(),
-  notes: z.string(),
-  branchName: z.string(),
+  customerPhone: z.string(),
+  notes: z.string().nullable(),
   workNotes: z.array(WorkNoteSchema),
 })
 export type AppointmentDetail = z.infer<typeof AppointmentDetailSchema>
@@ -88,8 +88,8 @@ export const MechanicScheduleSchema = z.object({
 export type MechanicSchedule = z.infer<typeof MechanicScheduleSchema>
 
 export const BookAppointmentResponseSchema = z.object({
+  id: z.string(),
   referenceNumber: z.string(),
-  appointmentId: z.string(),
 })
 export type BookAppointmentResponse = z.infer<typeof BookAppointmentResponseSchema>
 
@@ -97,8 +97,8 @@ export type BookAppointmentResponse = z.infer<typeof BookAppointmentResponseSche
 export interface BookAppointmentRequest {
   slotId: string
   customerName: string
-  vehicleReg: string
-  phoneNumber: string
+  customerPhone: string
+  vehicleRegistration: string
   notes: string
 }
 

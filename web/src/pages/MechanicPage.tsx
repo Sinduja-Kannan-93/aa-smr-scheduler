@@ -83,15 +83,15 @@ function AppointmentRow({ appt, onOpen }: { appt: AppointmentListItem; onOpen: (
     <Card className="appt-card" padding="sm">
       <div className="appt-card__inner">
         <div className="appt-card__time-col">
-          <span className="appt-card__date">{formatDate(appt.slotStartTime)}</span>
+          <span className="appt-card__date">{formatDate(appt.startUtc)}</span>
           <span className="appt-card__time">
-            {formatTime(appt.slotStartTime)} – {formatTime(appt.slotEndTime)}
+            {formatTime(appt.startUtc)} – {formatTime(appt.endUtc)}
           </span>
         </div>
         <div className="appt-card__info">
           <span className="appt-card__customer">{appt.customerName}</span>
           <span className="appt-card__service">{appt.serviceTypeName}</span>
-          <span className="appt-card__reg">{appt.vehicleReg}</span>
+          <span className="appt-card__reg">{appt.vehicleRegistration}</span>
         </div>
         <div className="appt-card__status">
           <StatusBadge status={appt.status} />
@@ -235,13 +235,13 @@ function AppointmentDetailView({
         </div>
         <div className="detail-summary__grid">
           <DetailField label="Customer" value={data.customerName} />
-          <DetailField label="Vehicle" value={data.vehicleReg} />
-          <DetailField label="Phone" value={data.phoneNumber} />
+          <DetailField label="Vehicle" value={data.vehicleRegistration} />
+          <DetailField label="Phone" value={data.customerPhone} />
           <DetailField label="Service" value={data.serviceTypeName} />
           <DetailField label="Branch" value={data.branchName} />
           <DetailField
             label="Slot"
-            value={`${formatDate(data.slotStartTime)}, ${formatTime(data.slotStartTime)}–${formatTime(data.slotEndTime)}`}
+            value={`${formatDate(data.startUtc)}, ${formatTime(data.startUtc)}–${formatTime(data.endUtc)}`}
           />
         </div>
         {data.notes && (
@@ -261,9 +261,9 @@ function AppointmentDetailView({
           <ul className="work-notes__list">
             {data.workNotes.map(wn => (
               <li key={wn.id} className="work-note">
-                <p className="work-note__content">{wn.content}</p>
+                <p className="work-note__content">{wn.body}</p>
                 <p className="work-note__meta">
-                  {wn.addedByName} · {formatDateTime(wn.addedAt)}
+                  {wn.authorName} · {formatDateTime(wn.createdUtc)}
                 </p>
               </li>
             ))}

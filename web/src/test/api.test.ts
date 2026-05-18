@@ -86,8 +86,8 @@ describe('Zod schemas', () => {
   it('parses a valid Slot', () => {
     const slot = SlotSchema.parse({
       id: 'a1b2c3d4-0001-0000-0000-000000000001',
-      startTime: '2024-06-15T09:00:00',
-      endTime: '2024-06-15T10:00:00',
+      startUtc: '2024-06-15T09:00:00',
+      endUtc: '2024-06-15T10:00:00',
       mechanicId: 'm1b2c3d4-0001-0000-0000-000000000001',
       mechanicName: 'Joe',
       branchId: 'b1b2c3d4-0001-0000-0000-000000000001',

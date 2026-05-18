@@ -61,8 +61,8 @@ export function BookingPage() {
     bookSlot({
       slotId: selectedSlot.id,
       customerName: fd.get('customerName') as string,
-      vehicleReg: fd.get('vehicleReg') as string,
-      phoneNumber: fd.get('phoneNumber') as string,
+      customerPhone: fd.get('customerPhone') as string,
+      vehicleRegistration: fd.get('vehicleRegistration') as string,
       notes: fd.get('notes') as string,
     })
   }
@@ -142,8 +142,8 @@ export function BookingPage() {
             <SlotSummary slot={selectedSlot} />
             <form id="book-form" onSubmit={handleBook} className="book-form">
               <Input label="Customer name" name="customerName" required placeholder="Full name" />
-              <Input label="Vehicle registration" name="vehicleReg" required placeholder="e.g. 241-D-12345" />
-              <Input label="Phone number" name="phoneNumber" type="tel" required placeholder="+353…" />
+              <Input label="Vehicle registration" name="vehicleRegistration" required placeholder="e.g. 241-D-12345" />
+              <Input label="Phone number" name="customerPhone" type="tel" required placeholder="+353…" />
               <Textarea label="Notes" name="notes" placeholder="Any additional notes…" rows={3} />
             </form>
           </>
@@ -179,7 +179,7 @@ function SlotCard({ slot, onBook }: { slot: Slot; onBook: () => void }) {
   return (
     <div className="slot-card">
       <div className="slot-card__time">
-        {formatTime(slot.startTime)} – {formatTime(slot.endTime)}
+        {formatTime(slot.startUtc)} – {formatTime(slot.endUtc)}
       </div>
       <div className="slot-card__service">{slot.serviceTypeName}</div>
       <div className="slot-card__meta">
@@ -199,11 +199,11 @@ function SlotSummary({ slot }: { slot: Slot }) {
     <div className="slot-summary">
       <div className="slot-summary__row">
         <span className="slot-summary__key">Date</span>
-        <span className="slot-summary__val">{formatDate(slot.startTime)}</span>
+        <span className="slot-summary__val">{formatDate(slot.startUtc)}</span>
       </div>
       <div className="slot-summary__row">
         <span className="slot-summary__key">Time</span>
-        <span className="slot-summary__val">{formatTime(slot.startTime)} – {formatTime(slot.endTime)}</span>
+        <span className="slot-summary__val">{formatTime(slot.startUtc)} – {formatTime(slot.endUtc)}</span>
       </div>
       <div className="slot-summary__row">
         <span className="slot-summary__key">Service</span>
@@ -223,7 +223,7 @@ function SlotSummary({ slot }: { slot: Slot }) {
 
 function groupByDate(slots: Slot[]): Record<string, Slot[]> {
   return slots.reduce<Record<string, Slot[]>>((acc, slot) => {
-    const key = formatDate(slot.startTime)
+    const key = formatDate(slot.startUtc)
     return { ...acc, [key]: [...(acc[key] ?? []), slot] }
   }, {})
 }
