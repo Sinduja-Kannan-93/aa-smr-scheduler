@@ -1,0 +1,135 @@
+.admin-page {}
+
+/* Stats row */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+@media (max-width: 768px) {
+  .admin-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stat-card--accent {
+  background: var(--color-yellow-light);
+  border-color: #fde68a;
+}
+
+.stat-card__value {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-navy);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stat-card__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Mechanic grid */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--space-5);
+}
+
+.admin-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-16) 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* Mechanic card */
+.mechanic-card { }
+
+.mechanic-card__empty {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-4) 0;
+  text-align: center;
+}
+
+.mechanic-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Appointment row */
+.appt-row {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.appt-row:hover {
+  background: var(--color-bg);
+}
+
+.appt-row__time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.appt-row__time-sep {
+  color: var(--color-text-muted);
+  font-weight: var(--weight-normal);
+}
+
+.appt-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.appt-row__customer {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appt-row__detail {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appt-row__status {
+  flex-shrink: 0;
+}
